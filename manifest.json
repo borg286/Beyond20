@@ -11,7 +11,8 @@
 		"*://app.roll20.net/editor/",
 		"*://*.dndbeyond.com/*",
 		"*://*.forge-vtt.com/game",
-		"*://*.astraltabletop.com/play/*"
+		"*://*.astraltabletop.com/play/*",
+		"*://5e.tools/*"
 	],
 	"icons": {
 		"16": "images/icons/icon16.png",
@@ -42,6 +43,7 @@
 		"dist/roll20_script.js",
 		"dist/fvtt_script.js",
 		"dist/astral_script.js",
+		"dist/5e_tools.js",
 		"popup.html",
 		"options.html"
 	],
@@ -83,6 +85,23 @@
 				"libs/alertify.min.js",
 				"libs/jquery-3.4.1.min.js",
 				"dist/dndbeyond_monster.js"
+			],
+			"all_frames": true
+		},
+		{
+			"matches": [
+				"*://5e.tools/*"
+			],
+			"css": [
+				"libs/css/alertify.css",
+				"libs/css/alertify-themes/default.css",
+				"libs/css/alertify-themes/beyond20.css",
+				"dist/etools.css"
+			],
+			"js": [
+				"libs/alertify.min.js",
+				"libs/jquery-3.4.1.min.js",
+				"dist/etools.js"
 			],
 			"all_frames": true
 		},

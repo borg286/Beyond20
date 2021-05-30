@@ -71,6 +71,17 @@ const SRC_FILES = {
         "src/roll20/page-script.js",
         "src/common/sandbox-footer.js"
     ],
+    etools: [
+        ...ROLL_RENDERER_DEPS,
+        "src/5etools/renderer.js",
+        "src/5etools/content-script.js"
+    ],
+    etools_script: [
+        "src/common/sandbox-header.js",
+        "src/common/utils.js",
+        "src/5etools/page-script.js",
+        "src/common/sandbox-footer.js"
+    ],
     fvtt_test: [
         "src/fvtt/check-tab.js"
     ],
@@ -120,7 +131,10 @@ const SRC_FILES = {
         "src/dndbeyond/content-scripts/character.js",
     ]
 }
-const CSS_FILES = ['src/extension/beyond20.css']
+const CSS_FILES = {
+    etools: 'src/extension/etools.css',
+    beyond20:'src/extension/beyond20.css'
+}
 
 const targets = {};
 for (const target in SRC_FILES) {
@@ -134,14 +148,26 @@ for (const target in SRC_FILES) {
     targets[target] = task[target];
     gulp.task(target, targets[target]);
 }
-css = () => gulp.src(CSS_FILES)
-    .pipe(concat(`beyond20.css`))
-    .pipe(gulp.dest("dist"))
+
+const csstargets = {};
+for (const target in CSS_FILES) {
+    // Use an object with a named key so each task function gets
+    // named instead of being anonymous functions
+    const task = {
+        [target]: () => gulp.src(CSS_FILES[target])
+            .pipe(concat(`${target}.css`))
+            .pipe(gulp.dest("dist"))
+    };
+    csstargets[target] = task[target];
+    gulp.task(target, targets[target]);
+}
 
 watch = () => {
     for (target in SRC_FILES)
         gulp.watch(SRC_FILES[target], targets[target]);
-    gulp.watch(CSS_FILES, css);
+    for (target in CSS_FILES)
+        gulp.watch(SRC_FILES[target], csstargets[target]);
+
     gulp.watch(["manifest.json", "manifest_ff.json", "dist/**"], gulp.series([
         "copy-chrome-dist", "chrome-manifest", "copy-firefox-dist", "firefox-manifest"
     ]));
@@ -150,9 +176,8 @@ watch = () => {
     ]));
 }
 
-build = gulp.series(css, ...Object.values(targets));
+build = gulp.series(...Object.values(csstargets), ...Object.values(targets));
 
-gulp.task('css', css);
 gulp.task('watch', watch);
 gulp.task('build', build);
 
