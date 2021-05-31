@@ -43,7 +43,7 @@
 		"dist/roll20_script.js",
 		"dist/fvtt_script.js",
 		"dist/astral_script.js",
-		"dist/5e_tools.js",
+		"dist/etools_script.js",
 		"popup.html",
 		"options.html"
 	],
