@@ -4,7 +4,7 @@ console.log("Beyond20: 5etools module loaded.");
 //const txt = chat.getElementsByTagName("ipt-roll")[0];
 //const btn = chat.getElementsByTagName("btn")[0];
 //const speakingas = document.getElementById("speakingas");
-var settings = getDefaultSettings();
+//var settings = getDefaultSettings();
 
 
 function injectSettingsButton() {
@@ -22,7 +22,7 @@ function injectSettingsButton() {
 function updateSettings(new_settings = null) {
     if (new_settings) {
         settings = new_settings;
-        roll_renderer.setSettings(settings);
+        //roll_renderer.setSettings(settings);
     } else {
         getStoredSettings((saved_settings) => {
             updateSettings(saved_settings);
@@ -51,3 +51,4 @@ chrome.runtime.sendMessage({ "action": "activate-icon" });
 sendCustomEvent("disconnect");
 injectPageScript(chrome.runtime.getURL('dist/etools_script.js'));
 injectSettingsButton();
+//sendCustomEvent("AstralRenderedRoll", []);

@@ -1,6 +1,7 @@
 //from elementmaker import E;
 //from utils import roll20Title, fvttTitle, isFVTT;
 
+
 class WhisperType {
     static get NO() { return 0; }
     static get YES() { return 1; }

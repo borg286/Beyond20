@@ -159,7 +159,7 @@ for (const target in CSS_FILES) {
             .pipe(gulp.dest("dist"))
     };
     csstargets[target] = task[target];
-    gulp.task(target, targets[target]);
+    gulp.task(target, csstargets[target]);
 }
 
 watch = () => {
