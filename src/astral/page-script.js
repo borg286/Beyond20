@@ -1,5 +1,6 @@
 let chatIframe;
 
+console.log("Loading pagescritp.js")
 $.fn.watch = function(property, callback) {
     return $(this).each(function() {
         var self = this;
@@ -69,8 +70,10 @@ async function speakAs(characterName) {
 }
 
 function convertRollToText(roll, standout=false) {
+    console.log("Roll: ", roll)
     if (typeof (roll) === "string")
         return roll;
+    console.log("roll is not a string")
     const total = String(roll.total || 0);
     const prefix = (standout && !roll.discarded) ? '`' : '';
     const suffix = (standout && !roll.discarded) ? '`' : '';
@@ -94,6 +97,7 @@ function stripRequestForAttackRoll(request) {
 
 
 async function handleRenderedRoll(request) {
+    console.log("Got Rendered Roll: ", request)
     const originalRequest = request.request;
     let rolls = [];
     if (!originalRequest.rollDamage && request.source)
@@ -106,6 +110,7 @@ async function handleRenderedRoll(request) {
         rolls.push(...request.roll_info.filter(([name, info]) => !request.attributes[name.split(": ")[0]]));
     }
 
+    console.log("1: ", rolls)
     let title = request.title;
     if (request.attack_rolls.length > 0) {
         rolls.push([request.title, request.attack_rolls.map(roll => convertRollToText(roll, true)).join(" ")]);
@@ -118,6 +123,7 @@ async function handleRenderedRoll(request) {
 
     rolls.push(...Object.entries(request.total_damages).map(([key, roll]) => ["Total " + key, convertRollToText(roll)]));
 
+    console.log("2: ", rolls)
     let rollDamages = null;
     if (originalRequest.rollAttack && !originalRequest.rollDamage) {
         originalRequest.rollAttack = false;
@@ -137,6 +143,7 @@ async function handleRenderedRoll(request) {
     let message = template(rolls);
 
     
+    console.log("3: ", rolls)
     if (!originalRequest.rollDamage && request.open && request.description) {
         message = `${message}
 
@@ -144,10 +151,12 @@ async function handleRenderedRoll(request) {
 ${parseDescription(request, request.description)}`
     }
 
+    console.log("4: ", rolls)
     await postChatMessage({characterName: request.character, message, ...getDecoration(request.request.type), title, whisper: request.whisper == WhisperType.YES });
 }
 
 async function postChatMessage({characterName, message, color, icon, title, whisper}) {
+    console.log("Posting Chat Message")
     try {
         const user = getUser().uid;
         const room = getRoom();
@@ -386,5 +395,8 @@ function trySetDOMListeners() {
         setTimeout(trySetDOMListeners, 1000);
     }
 }
+console.log("Done defining functions")
 
 trySetDOMListeners();
+
+console.log("Done trySetDOMListeners")

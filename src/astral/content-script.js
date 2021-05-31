@@ -317,7 +317,7 @@ function handleMessage(request, sender, sendResponse) {
             postChatMessage({ characterName: request.character.name, message, icon: 'smiley-worry', color: '#F8E71C', title: 'Conditions', whisper: request.whisper == WhisperType.YES });
         }
     } else if (request.action == "roll") {
-        
+
         let custom_roll_dice = "";
         if (request.character.type == "Character")
             custom_roll_dice = request.character.settings["custom-roll-dice"] || "";
@@ -378,3 +378,4 @@ injectPageScript(chrome.runtime.getURL("libs/lz-string.min.js"));
 injectPageScript(chrome.runtime.getURL('dist/astral_script.js'));
 sendCustomEvent("disconnect");
 console.log("content-script.js loaded");
+sendCustomEvent("AstralRenderedRoll", []);
